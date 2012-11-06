@@ -1,0 +1,14 @@
+name: ${project.name}
+version: ${buildNumber}
+description: ${project.description}
+author: ${project.organization.name}
+website: ${project.organization.url}
+
+main: com.almuramc.xpmining.XPMiningPlugin
+depend: [Vault]
+load: POSTWORLD
+
+permissions:
+    xpmining.xp:
+        description: Grants the user the ability to get xp from mining blocks.
+        default: op

@@ -1,0 +1,16 @@
+##########################
+# exp.yml
+#
+# material explanation:
+#
+# material:
+#   dirt:
+#     exp: 10
+#
+# Things to note:
+#                 - Negative values will decrease the user's exp, positive values will increase the user's exp.
+#                 - You must specify the correct spelling of the material, case does not matter (I handle it for you)
+##########################
+global:
+  exp: 0
+material:
