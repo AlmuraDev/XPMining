@@ -64,10 +64,12 @@ public class XPMiningListener implements Listener {
 				player.giveExp(1);
 				//Make sure you give them the left over exp (its only fair).
 				EXP_MAP.put(player.getUniqueId(), value - XPMiningPlugin.getConfiguration().getThreshold());
-				return;
+			} else {
+				EXP_MAP.put(player.getUniqueId(), value);
 			}
+		} else {
+			//New entry, throw it in the map.
+			EXP_MAP.put(player.getUniqueId(), toGive);
 		}
-		//Either not over the threshold or new entry, either way throw it in the map.
-		EXP_MAP.put(player.getUniqueId(), toGive);
 	}
 }
