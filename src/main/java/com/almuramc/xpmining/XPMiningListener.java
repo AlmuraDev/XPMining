@@ -19,12 +19,14 @@
  */
 package com.almuramc.xpmining;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class XPMiningListener implements Listener {
 	private final XPMiningPlugin plugin;
@@ -33,7 +35,7 @@ public class XPMiningListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.isCancelled()) {
 			event.setCancelled(true);
@@ -44,7 +46,15 @@ public class XPMiningListener implements Listener {
 		if (!plugin.getPermissions().has(player.getWorld(), player.getName(), "xpmining.xp")) {
 			return;
 		}
+		event.setCancelled(true);
 		final Material material = event.getBlock().getType();
-		event.setExpToDrop(XPMiningPlugin.getConfiguration().getExp().getExpCost(material));
+		final int exp = XPMiningPlugin.getConfiguration().getExp().getExpCost(material);
+		if (exp == 0) {
+			return;
+		}
+		final int change = player.getTotalExperience() - exp;
+		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, change);
+		Bukkit.getPluginManager().callEvent(expEvent);
+		player.setTotalExperience(expEvent.getAmount());
 	}
 }
