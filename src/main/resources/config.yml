@@ -1,0 +1,9 @@
+##########################
+# config.yml
+#
+# threshold: 1000
+#   Threshold means that when the exp from mining builds over 1000, the player will be given an exp point
+#   in Bukkit. This is a workaround to the lack of being able to just give a double real amount of exp.
+#
+##########################
+threshold: 1000

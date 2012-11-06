@@ -23,16 +23,18 @@ import java.io.File;
 
 import com.almuramc.xpmining.XPMiningPlugin;
 
+import org.bukkit.configuration.file.FileConfiguration;
+
 public final class XPMiningConfiguration {
 	private final XPMiningPlugin plugin;
 	//Configurations
-	//private final FileConfiguration config;
+	private final FileConfiguration config;
 	private final ExpConfiguration expConfig;
 
 	public XPMiningConfiguration(XPMiningPlugin plugin) {
 		this.plugin = plugin;
 		//Read in default config.yml
-		//config = plugin.getConfig();
+		config = plugin.getConfig();
 		//Setup exp file
 		File expYml = new File(plugin.getDataFolder(), "exp.yml");
 		if (!expYml.exists()) {
@@ -48,5 +50,9 @@ public final class XPMiningConfiguration {
 
 	public final ExpConfiguration getExp() {
 		return expConfig;
+	}
+
+	public double getThreshold() {
+		return config.getDouble("threshold", 1000); //1000 is the plugin default
 	}
 }

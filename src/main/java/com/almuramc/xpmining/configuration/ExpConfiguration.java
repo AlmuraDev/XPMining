@@ -35,7 +35,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class ExpConfiguration {
 	private final FileConfiguration config;
 	private final HashMap<Material, ExpNode> nodes = new HashMap<Material, ExpNode>();
-	private int globalExp;
+	private double globalExp;
 
 	public ExpConfiguration(File expYml) {
 		config = YamlConfiguration.loadConfiguration(expYml);
@@ -47,7 +47,7 @@ public class ExpConfiguration {
 		if (global == null) {
 			throw new IllegalStateException("Missing global section in your exp.yml.");
 		}
-		globalExp = global.getInt("exp", 0);
+		globalExp = global.getDouble("exp", 0.0);
 		//Now, we read in any material costs (if any)
 		ConfigurationSection material = config.getConfigurationSection("material");
 		if (material == null) {
@@ -67,7 +67,7 @@ public class ExpConfiguration {
 				Bukkit.getLogger().log(Level.WARNING, XPMiningPlugin.getPrefix() + " Found " + key + " in exp.yml but is a duplicate! Overwriting...");
 			}
 			ConfigurationSection node = material.getConfigurationSection(key);
-			nodes.put(keyed, new ExpNode(keyed, node.getInt("exp", globalExp)));
+			nodes.put(keyed, new ExpNode(keyed, node.getDouble("exp", globalExp)));
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ExpConfiguration {
 		construct();
 	}
 
-	public int getExpCost(Material material) {
+	public double getExpCost(Material material) {
 		if (material == null) {
 			return globalExp;
 		}

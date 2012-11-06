@@ -19,6 +19,9 @@
  */
 package com.almuramc.xpmining;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -32,6 +35,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class XPMiningListener implements Listener {
 	private final XPMiningPlugin plugin;
+	private final HashMap<UUID, Double> EXP_MAP = new HashMap<UUID, Double>();
 
 	public XPMiningListener(XPMiningPlugin plugin) {
 		this.plugin = plugin;
@@ -49,12 +53,22 @@ public class XPMiningListener implements Listener {
 			return;
 		}
 		final Material material = event.getBlock().getType();
-		final int change = XPMiningPlugin.getConfiguration().getExp().getExpCost(material);
-		if (change == 0) {
+		final double exp = XPMiningPlugin.getConfiguration().getExp().getExpCost(material);
+		if (exp == 0) {
 			return;
 		}
-		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, change);
+		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, (int) exp);
 		Bukkit.getPluginManager().callEvent(expEvent);
-		player.giveExp(expEvent.getAmount());
+		final double toGive = expEvent.getAmount();
+		if (EXP_MAP.containsKey(player.getUniqueId())) {
+			if (EXP_MAP.get(player.getUniqueId()) + toGive > XPMiningPlugin.getConfiguration().getThreshold()) {
+				player.giveExp(1);
+				EXP_MAP.put(player.getUniqueId(), 0.0);
+			} else {
+				EXP_MAP.put(player.getUniqueId(), toGive);
+			}
+		} else {
+			EXP_MAP.put(player.getUniqueId(), toGive);
+		}
 	}
 }

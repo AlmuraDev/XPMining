@@ -26,9 +26,9 @@ import org.bukkit.Material;
  */
 public final class ExpNode {
 	private Material material;
-	private int xp;
+	private double xp;
 
-	public ExpNode(Material material, int xp) {
+	public ExpNode(Material material, double xp) {
 		this.material = material;
 		this.xp = xp;
 	}
@@ -37,7 +37,7 @@ public final class ExpNode {
 		return material;
 	}
 
-	public int getXP() {
+	public double getXP() {
 		return xp;
 	}
 }
