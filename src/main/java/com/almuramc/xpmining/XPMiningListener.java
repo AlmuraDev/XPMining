@@ -24,13 +24,11 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class XPMiningListener implements Listener {
@@ -61,14 +59,15 @@ public class XPMiningListener implements Listener {
 		Bukkit.getPluginManager().callEvent(expEvent);
 		final double toGive = expEvent.getAmount();
 		if (EXP_MAP.containsKey(player.getUniqueId())) {
-			if (EXP_MAP.get(player.getUniqueId()) + toGive > XPMiningPlugin.getConfiguration().getThreshold()) {
+			double value = EXP_MAP.get(player.getUniqueId()) + toGive;
+			if (value > XPMiningPlugin.getConfiguration().getThreshold()) {
 				player.giveExp(1);
-				EXP_MAP.put(player.getUniqueId(), 0.0);
-			} else {
-				EXP_MAP.put(player.getUniqueId(), toGive);
+				//Make sure you give them the left over exp (its only fair).
+				EXP_MAP.put(player.getUniqueId(), value - XPMiningPlugin.getConfiguration().getThreshold());
+				return;
 			}
-		} else {
-			EXP_MAP.put(player.getUniqueId(), toGive);
 		}
+		//Either not over the threshold or new entry, either way throw it in the map.
+		EXP_MAP.put(player.getUniqueId(), toGive);
 	}
 }
