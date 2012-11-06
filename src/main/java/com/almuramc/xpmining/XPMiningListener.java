@@ -57,15 +57,4 @@ public class XPMiningListener implements Listener {
 		Bukkit.getPluginManager().callEvent(expEvent);
 		player.giveExp(expEvent.getAmount());
 	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntitySpawn(CreatureSpawnEvent event) {
-		if (event.isCancelled()) {
-			event.setCancelled(true);
-			return;
-		}
-		if (event.getEntityType().equals(EntityType.EXPERIENCE_ORB)) {
-			event.setCancelled(true);
-		}
-	}
 }
