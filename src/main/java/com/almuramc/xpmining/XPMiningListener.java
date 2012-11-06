@@ -21,11 +21,13 @@ package com.almuramc.xpmining;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class XPMiningListener implements Listener {
@@ -46,15 +48,24 @@ public class XPMiningListener implements Listener {
 		if (!plugin.getPermissions().has(player.getWorld(), player.getName(), "xpmining.xp")) {
 			return;
 		}
-		event.setCancelled(true);
 		final Material material = event.getBlock().getType();
-		final int exp = XPMiningPlugin.getConfiguration().getExp().getExpCost(material);
-		if (exp == 0) {
+		final int change = XPMiningPlugin.getConfiguration().getExp().getExpCost(material);
+		if (change == 0) {
 			return;
 		}
-		final int change = player.getTotalExperience() - exp;
 		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, change);
 		Bukkit.getPluginManager().callEvent(expEvent);
-		player.setTotalExperience(expEvent.getAmount());
+		player.giveExp(expEvent.getAmount());
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onEntitySpawn(CreatureSpawnEvent event) {
+		if (event.isCancelled()) {
+			event.setCancelled(true);
+			return;
+		}
+		if (event.getEntityType().equals(EntityType.EXPERIENCE_ORB)) {
+			event.setCancelled(true);
+		}
 	}
 }
