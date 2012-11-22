@@ -53,6 +53,10 @@ public final class XPMiningConfiguration {
 	}
 
 	public double getThreshold() {
-		return config.getDouble("threshold", 1000); //1000 is the plugin default
+		return config.getDouble("threshold", 100); //100 is the plugin default
+	}
+
+	public boolean getDebug() {		
+		return config.getBoolean("debug", false); //False because most users dont care
 	}
 }

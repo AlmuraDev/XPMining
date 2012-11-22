@@ -44,24 +44,32 @@ public class XPMiningListener implements Listener {
 		if (event.isCancelled()) {
 			event.setCancelled(true);
 			return;
-		}
-
+		}		
 		final Player player = event.getPlayer();
 		if (!plugin.getPermissions().has(player.getWorld(), player.getName(), "xpmining.xp")) {
 			return;
 		}
 		final Material material = event.getBlock().getType();
+		if (XPMiningPlugin.getConfiguration().getDebug()) {
+			player.sendMessage("XPMining: Materials = " + material);
+		}
 		final double exp = XPMiningPlugin.getConfiguration().getExp().getExpCost(material);
+		if (XPMiningPlugin.getConfiguration().getDebug()) {
+			player.sendMessage("XPMining: Returned XP Amount = " + exp);
+		}
 		if (exp == 0) {
 			return;
 		}
-		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, (int) exp);
-		Bukkit.getPluginManager().callEvent(expEvent);
+		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, (int) exp);		
 		final double toGive = expEvent.getAmount();
 		if (EXP_MAP.containsKey(player.getUniqueId())) {
 			double value = EXP_MAP.get(player.getUniqueId()) + toGive;
 			if (value > XPMiningPlugin.getConfiguration().getThreshold()) {
 				player.giveExp(1);
+				if (XPMiningPlugin.getConfiguration().getDebug()) {
+					player.sendMessage("XPMining: Calling ExpChange Event");
+				}
+				Bukkit.getPluginManager().callEvent(expEvent);				
 				//Make sure you give them the left over exp (its only fair).
 				EXP_MAP.put(player.getUniqueId(), value - XPMiningPlugin.getConfiguration().getThreshold());
 			} else {
@@ -70,6 +78,6 @@ public class XPMiningListener implements Listener {
 		} else {
 			//New entry, throw it in the map.
 			EXP_MAP.put(player.getUniqueId(), toGive);
-		}
+		}	
 	}
 }
