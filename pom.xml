@@ -5,7 +5,7 @@
 	<!-- Project information -->
 	<groupId>com.almuramc</groupId>
 	<artifactId>xpmining</artifactId>
-	<version>dev-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>XPMining</name>
 	<url>http://www.almuramc.com</url>
 	<description>XPMining is a simple plugin that allows you to config exp gains/losses per block.</description>

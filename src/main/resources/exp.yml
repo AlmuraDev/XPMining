@@ -14,3 +14,39 @@
 global:
   exp: 0
 material:
+    netherrack:
+        exp: 5
+    leaves:
+        exp: 5
+    dirt:
+        exp: 10
+    stone:
+        exp: 10
+    cobblestone:
+        exp: 10 
+    grass:
+        exp: 10
+    sand:
+        exp: 10
+    sandstone:
+        exp: 10
+    long_grass:
+        exp: 10
+    dead_bush:
+        exp: 10
+    cactus:
+        exp: 10
+    log:
+        exp: 10
+    gold_ore:
+        exp: 25
+    iron_ore:
+        exp: 25
+    coal_ore:
+        exp: 25
+    redstone_ore:
+        exp: 25
+    diamond_ore:
+        exp: 25   
+    lapis_ore:
+        exp: 25    
