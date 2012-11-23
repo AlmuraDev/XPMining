@@ -60,16 +60,16 @@ public class XPMiningListener implements Listener {
 		if (exp == 0) {
 			return;
 		}
-		PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, (int) exp);		
-		final double toGive = expEvent.getAmount();
+		double toGive = exp;
 		if (EXP_MAP.containsKey(player.getUniqueId())) {
 			double value = EXP_MAP.get(player.getUniqueId()) + toGive;
 			if (value > XPMiningPlugin.getConfiguration().getThreshold()) {
-				player.giveExp(1);
+				final PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, 1);
+				Bukkit.getPluginManager().callEvent(expEvent);
+				player.giveExp(expEvent.getAmount());
 				if (XPMiningPlugin.getConfiguration().getDebug()) {
 					player.sendMessage("XPMining: Calling ExpChange Event");
 				}
-				Bukkit.getPluginManager().callEvent(expEvent);				
 				//Make sure you give them the left over exp (its only fair).
 				EXP_MAP.put(player.getUniqueId(), value - XPMiningPlugin.getConfiguration().getThreshold());
 			} else {
