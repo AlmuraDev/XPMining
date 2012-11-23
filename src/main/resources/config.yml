@@ -7,4 +7,4 @@
 #
 ##########################
 threshold: 1000
-debug: true
+debug: false
