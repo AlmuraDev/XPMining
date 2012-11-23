@@ -60,9 +60,8 @@ public class XPMiningListener implements Listener {
 		if (exp == 0) {
 			return;
 		}
-		double toGive = exp;
 		if (EXP_MAP.containsKey(player.getUniqueId())) {
-			double value = EXP_MAP.get(player.getUniqueId()) + toGive;
+			double value = EXP_MAP.get(player.getUniqueId()) + exp;
 			if (value > XPMiningPlugin.getConfiguration().getThreshold()) {
 				final PlayerExpChangeEvent expEvent = new PlayerExpChangeEvent(player, 1);
 				Bukkit.getPluginManager().callEvent(expEvent);
@@ -77,7 +76,7 @@ public class XPMiningListener implements Listener {
 			}
 		} else {
 			//New entry, throw it in the map.
-			EXP_MAP.put(player.getUniqueId(), toGive);
+			EXP_MAP.put(player.getUniqueId(), exp);
 		}	
 	}
 }
